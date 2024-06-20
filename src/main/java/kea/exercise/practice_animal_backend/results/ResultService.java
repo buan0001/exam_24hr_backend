@@ -35,6 +35,8 @@ public class ResultService {
         Result existingResult = resultRepository.findById(id).orElseThrow(() -> new RuntimeException("Result not found"));
         existingResult.setDate(result.getDate());
         existingResult.setResultValue(result.getResultValue());
+        existingResult.setParticipant(result.getParticipant());
+        existingResult.setDiscipline(result.getDiscipline());
         return toDTO(resultRepository.save(existingResult));
     }
 

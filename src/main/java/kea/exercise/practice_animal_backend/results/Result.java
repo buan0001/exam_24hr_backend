@@ -39,11 +39,12 @@ public class Result {
     public String getResult() {
         String result;
         switch (discipline.getResultType()) {
-            case JUMP_HEIGHT, DISTANCE_THROWN, JUMP_LENGTH:
-                result = String.format("%.2fm", resultValue);
+            case THROW:
+            case JUMP:
+                result = String.format("%.2f", resultValue);
                 break;
             case POINTS:
-                result = String.format("%.2f points", resultValue);
+                result = String.format("%.2f", resultValue);
                 break;
             case TIME:
                 int totalSeconds = (int) (resultValue / 1000);
@@ -65,26 +66,4 @@ public class Result {
         return result;
     }
 
-//    String getResult() {
-//
-//        StringBuilder result = new StringBuilder();
-//         if (discipline.getResultType() == ResultType.JUMP_HEIGHT) {
-//            if (resultValue > 100) {
-//                result.append();
-//
-//            }
-//        }
-//        else if (discipline.getResultType() == ResultType.POINTS) {
-//            return String.format("%.2f", resultValue) + " points";
-//        }
-//        else if (discipline.getResultType() == ResultType.DISTANCE) {
-//            return String.format("%.2f", resultValue) + " meters";
-//        }
-//        else if (discipline.getResultType() == ResultType.TIME) {
-//            return String.format("%.2f", resultValue) + " seconds";
-//        }
-//        else {
-//            return "Unknown result type";
-//        }
-//    }
 }

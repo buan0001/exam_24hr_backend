@@ -46,16 +46,16 @@ public class InitData implements CommandLineRunner {
     }
 
     private void initDisciplines() {
-        disciplines.add(new Discipline("Discus", ResultType.DISTANCE_THROWN));
+        disciplines.add(new Discipline("Discus", ResultType.THROW));
         disciplines.add(new Discipline("100m Hurdles", ResultType.TIME));
-        disciplines.add(new Discipline("High Jump", ResultType.JUMP_HEIGHT));
-        disciplines.add(new Discipline("Long Jump", ResultType.JUMP_LENGTH));
+        disciplines.add(new Discipline("High Jump", ResultType.JUMP));
+        disciplines.add(new Discipline("Long Jump", ResultType.JUMP));
         disciplines.add(new Discipline("100m Sprint", ResultType.TIME));
-        disciplines.add(new Discipline("Shot Put", ResultType.DISTANCE_THROWN));
-        disciplines.add(new Discipline("Pole Vault", ResultType.JUMP_LENGTH));
-        disciplines.add(new Discipline("Javelin", ResultType.DISTANCE_THROWN));
-        disciplines.add(new Discipline("Hammer Throw", ResultType.DISTANCE_THROWN));
-        disciplines.add(new Discipline("Triple Jump", ResultType.JUMP_LENGTH));
+        disciplines.add(new Discipline("Shot Put", ResultType.THROW));
+        disciplines.add(new Discipline("Pole Vault", ResultType.JUMP));
+        disciplines.add(new Discipline("Javelin", ResultType.THROW));
+        disciplines.add(new Discipline("Hammer Throw", ResultType.THROW));
+        disciplines.add(new Discipline("Triple Jump", ResultType.JUMP));
         disciplines.add(new Discipline("Decathlon", ResultType.POINTS));
         disciplines.add(new Discipline("800m", ResultType.TIME));
 
@@ -66,9 +66,9 @@ public class InitData implements CommandLineRunner {
         Random random = new Random();
         for (Discipline discipline : disciplines) {
             for (int j = 0; j < 3; j++) {
-                if (discipline.getResultType() == ResultType.DISTANCE_THROWN) {
+                if (discipline.getResultType() == ResultType.THROW) {
                     results.add(new Result(LocalDate.now(), random.nextDouble(15, 65), discipline, participants.get(random.nextInt(participants.size()))));
-                } else if (discipline.getResultType() == ResultType.JUMP_HEIGHT || discipline.getResultType() == ResultType.JUMP_LENGTH){
+                } else if (discipline.getResultType() == ResultType.JUMP){
                     results.add(new Result(LocalDate.now(), random.nextDouble(1, 3), discipline,participants.get(random.nextInt(participants.size()))));
                 } else if (discipline.getResultType() == ResultType.TIME) {
                     results.add(new Result(LocalDate.now(), random.nextDouble(10 * 1000, 240 * 1000), discipline,participants.get(random.nextInt(participants.size()))));
