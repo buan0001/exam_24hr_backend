@@ -1,9 +1,12 @@
 package kea.exercise.practice_animal_backend.participants;
 
+import kea.exercise.practice_animal_backend.common.DTOConverter;
 import kea.exercise.practice_animal_backend.participants.dtos.ParticipantResponseBasics;
 import kea.exercise.practice_animal_backend.participants.dtos.ParticipantResponseDetail;
 import kea.exercise.practice_animal_backend.results.Result;
+import kea.exercise.practice_animal_backend.results.ResultRepository;
 import kea.exercise.practice_animal_backend.results.ResultService;
+import kea.exercise.practice_animal_backend.results.dtos.ResultResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,14 +18,16 @@ import java.util.NoSuchElementException;
 public class ParticipantService {
     private final ParticipantRepository participantRepository;
     private final ResultService resultService;
+    private final DTOConverter dtoConverter;
 
-    public ParticipantService(ParticipantRepository participantRepository, ResultService resultService) {
+    public ParticipantService(ParticipantRepository participantRepository, ResultService resultService, DTOConverter dtoConverter) {
         this.participantRepository = participantRepository;
         this.resultService = resultService;
+        this.dtoConverter = dtoConverter;
     }
 
     public List<ParticipantResponseBasics> getParticipants() {
-        return participantRepository.findAll().stream().map(this::toBasicDTO).toList();
+        return participantRepository.findAll().stream().map(participant -> dtoConverter.toBasicParticipantDTO(participant)).toList();
     }
 
     public ParticipantResponseDetail getParticipant(int id) {
@@ -37,11 +42,11 @@ public class ParticipantService {
         return toDetailDTO(participantRepository.save(participant)) ;
     }
 
-    public ParticipantResponseDetail addResult(int id, Result result) {
-        Participant participant = findParticipant(id);
-        participant.addResult(result);
-        return toDetailDTO(participantRepository.save(participant)) ;
-    }
+//    public ParticipantResponseDetail addResult(int id, Result result) {
+//        Participant participant = findParticipant(id);
+//        participant.addResult(result);
+//        return toDetailDTO(participantRepository.save(participant)) ;
+//    }
 
     public void deleteParticipant(int id) {
         participantRepository.deleteById(id);
@@ -52,21 +57,22 @@ public class ParticipantService {
         existingParticipant.setName(participant.getName());
         existingParticipant.setBirthDate(participant.getBirthDate());
         existingParticipant.setClub(participant.getClub());
+        existingParticipant.setGender(participant.getGender());
         return toDetailDTO(participantRepository.save(existingParticipant)) ;
     }
 
     public ParticipantResponseDetail toDetailDTO(Participant participant) {
-
+    List<ResultResponseDTO> foundResults = resultService.getResultsByParticipantID(participant.getId());
         return new ParticipantResponseDetail(participant.getId(), participant.getName(), participant.getBirthDate(), participant.getAge(), participant.getAgeGroup(), participant.getClub(), participant.getGender(),
-                participant.getResults().stream().map(res -> resultService.toDTO(res)).toList(), participant.getDisciplines());
+                foundResults, participant.getDisciplines());
     }
 
-    public ParticipantResponseBasics toBasicDTO(Participant participant) {
-        return new ParticipantResponseBasics(participant.getId(), participant.getName(), participant.getAge(), participant.getAgeGroup(), participant.getClub(), participant.getGender(), participant.getDisciplines());
-    }
+
 
     public List<Club> getClubs() {
         List<Participant> participants = participantRepository.findAll();
         return participants.stream().map(Participant::getClub).distinct().toList();
     }
+
+
 }

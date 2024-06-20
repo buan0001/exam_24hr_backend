@@ -50,11 +50,11 @@ public class ParticipantController {
         return participantService.createParticipant(participant);
     }
 
-    @PostMapping("/{id}/addResult")
-    public ParticipantResponseDetail addResult(@PathVariable int id, @RequestBody Result result) {
-        System.out.println("add Trophy");
-        return participantService.addResult(id, result);
-    }
+//    @PostMapping("/{id}/addResult")
+//    public ParticipantResponseDetail addResult(@PathVariable int id, @RequestBody Result result) {
+//        System.out.println("add Trophy");
+//        return participantService.addResult(id, result);
+//    }
 
     @PutMapping("/{id}")
     public ParticipantResponseDetail updateParticipant(@PathVariable int id, @RequestBody Participant participant) {

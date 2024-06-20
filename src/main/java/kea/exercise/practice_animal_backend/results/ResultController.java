@@ -15,6 +15,7 @@ public class ResultController {
     }
 
     @GetMapping
+
     public List<ResultResponseDTO> getResults() {
         return resultService.getResults();
     }
@@ -22,6 +23,11 @@ public class ResultController {
     @GetMapping("/{id}")
     public ResultResponseDTO getResult(@PathVariable int id) {
         return resultService.getResult(id);
+    }
+
+    @PostMapping("/{participantID}")
+    public ResultResponseDTO addResult(@PathVariable int participantID, @RequestBody Result result) {
+        return resultService.addResult(participantID, result);
     }
 
     @PutMapping("/{id}")

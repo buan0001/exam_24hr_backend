@@ -1,10 +1,8 @@
 package kea.exercise.practice_animal_backend.results;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import kea.exercise.practice_animal_backend.disciplines.Discipline;
+import kea.exercise.practice_animal_backend.participants.Participant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,11 +21,19 @@ public class Result {
     private double resultValue;
     @ManyToOne
     private Discipline discipline;
-
+    @ManyToOne
+    private Participant participant;
     public Result(LocalDate date, double resultValue, Discipline discipline) {
         this.date = date;
         this.resultValue = resultValue;
         this.discipline = discipline;
+    }
+
+    public Result(LocalDate date, double resultValue, Discipline discipline, Participant participant) {
+        this.date = date;
+        this.resultValue = resultValue;
+        this.discipline = discipline;
+        this.participant = participant;
     }
 
     public String getResult() {
@@ -45,7 +51,13 @@ public class Result {
                 double remainder = (resultValue / 1000.0) % 60;
                 int seconds = (int) remainder;
                 int milliseconds = (int) ((remainder - seconds) * 1000);
-                result = String.format("%d.%02d.%03d", minutes, seconds, milliseconds);
+                if (minutes == 0) {
+                    result = String.format("%d.%03d", seconds, milliseconds);
+                    break;
+                } else {
+                    result = String.format("%d.%02d.%03d", minutes, seconds, milliseconds);
+                }
+
                 break;
             default:
                 result = "Unknown result type";
