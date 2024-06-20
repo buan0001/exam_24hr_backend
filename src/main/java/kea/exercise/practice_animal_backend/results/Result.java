@@ -18,18 +18,18 @@ public class Result {
     @GeneratedValue
     private int id;
     private LocalDate date;
-    private double resultValue;
+    private int resultValue;
     @ManyToOne
     private Discipline discipline;
     @ManyToOne
     private Participant participant;
-    public Result(LocalDate date, double resultValue, Discipline discipline) {
+    public Result(LocalDate date, int resultValue, Discipline discipline) {
         this.date = date;
         this.resultValue = resultValue;
         this.discipline = discipline;
     }
 
-    public Result(LocalDate date, double resultValue, Discipline discipline, Participant participant) {
+    public Result(LocalDate date, int resultValue, Discipline discipline, Participant participant) {
         this.date = date;
         this.resultValue = resultValue;
         this.discipline = discipline;
@@ -40,18 +40,15 @@ public class Result {
         String result;
         switch (discipline.getResultType()) {
             case THROW:
-            case JUMP:
-                result = String.format("%.2f", resultValue);
-                break;
-            case POINTS:
-                result = String.format("%.2f", resultValue);
+            case JUMP, POINTS:
+                result = String.format("%d", resultValue);
                 break;
             case TIME:
                 int totalSeconds = (int) (resultValue / 1000);
                 int minutes = totalSeconds / 60;
                 double remainder = (resultValue / 1000.0) % 60;
                 int seconds = (int) remainder;
-                int milliseconds = (int) ((remainder - seconds) * 1000);
+                int milliseconds = (int) Math.round((remainder - seconds) * 1000);
                 if (minutes == 0) {
                     result = String.format("%d.%03d", seconds, milliseconds);
                     break;

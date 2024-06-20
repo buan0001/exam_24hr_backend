@@ -3,10 +3,10 @@ package kea.exercise.practice_animal_backend.results;
 import kea.exercise.practice_animal_backend.common.DTOConverter;
 import kea.exercise.practice_animal_backend.participants.Participant;
 import kea.exercise.practice_animal_backend.participants.ParticipantRepository;
-import kea.exercise.practice_animal_backend.participants.ParticipantService;
 import kea.exercise.practice_animal_backend.results.dtos.ResultResponseDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,9 +33,13 @@ public class ResultService {
 
     public ResultResponseDTO updateResult(int id, Result result) {
         Result existingResult = resultRepository.findById(id).orElseThrow(() -> new RuntimeException("Result not found"));
+        Participant foundParticipant = participantRepository.findById(result.getParticipant().getId()).orElseThrow(() -> new RuntimeException("Participant not found"));
+        if (!foundParticipant.hasDiscipline(result.getDiscipline())) {
+            throw new RuntimeException("Participant does not have discipline");
+        }
+        existingResult.setParticipant(foundParticipant);
         existingResult.setDate(result.getDate());
         existingResult.setResultValue(result.getResultValue());
-        existingResult.setParticipant(result.getParticipant());
         existingResult.setDiscipline(result.getDiscipline());
         return toDTO(resultRepository.save(existingResult));
     }
@@ -54,13 +58,23 @@ public class ResultService {
         resultRepository.deleteById(id);
     }
 
-    public ResultResponseDTO addResult(int participantID, Result result) {
-        Participant participant = participantRepository.findById(participantID).orElseThrow(() -> new RuntimeException("Participant not found"));
-        if (!allowedToAdd(result, participant)) {
-            throw new RuntimeException("Participant does not have discipline");
+    public List<ResultResponseDTO> addResults(List<Result> results) {
+
+        List<Result> validatedResults = new ArrayList<>();
+        for (Result result : results) {
+            Participant participant = participantRepository.findById(result.getParticipant().getId()).orElseThrow(() -> new RuntimeException("Participant not found"));
+            if (allowedToAdd(result, participant)) {
+                result.setParticipant(participant);
+                validatedResults.add(result);
+            }
         }
-        result.setParticipant(participant);
-        return toDTO(resultRepository.save(result));
+        return resultRepository.saveAll(validatedResults).stream().map(this::toDTO).toList();
+//        Participant participant = participantRepository.findById(participantID).orElseThrow(() -> new RuntimeException("Participant not found"));
+//        if (!allowedToAdd(result, participant)) {
+//            throw new RuntimeException("Participant does not have discipline");
+//        }
+//        result.setParticipant(participant);
+//        return toDTO(resultRepository.save(result));
     }
 
     public List<ResultResponseDTO> getResultsByParticipantID(int id) {

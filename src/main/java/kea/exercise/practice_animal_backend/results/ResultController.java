@@ -25,9 +25,10 @@ public class ResultController {
         return resultService.getResult(id);
     }
 
-    @PostMapping("/{participantID}")
-    public ResultResponseDTO addResult(@PathVariable int participantID, @RequestBody Result result) {
-        return resultService.addResult(participantID, result);
+    @PostMapping
+    public List<ResultResponseDTO> addResults(@RequestBody List<Result> results) {
+        System.out.println("add results");
+        return resultService.addResults( results);
     }
 
     @PutMapping("/{id}")

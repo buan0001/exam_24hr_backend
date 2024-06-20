@@ -67,13 +67,13 @@ public class InitData implements CommandLineRunner {
         for (Discipline discipline : disciplines) {
             for (int j = 0; j < 3; j++) {
                 if (discipline.getResultType() == ResultType.THROW) {
-                    results.add(new Result(LocalDate.now(), random.nextDouble(15, 65), discipline, participants.get(random.nextInt(participants.size()))));
+                    results.add(new Result(LocalDate.now(), random.nextInt(1500, 6500), discipline, participants.get(random.nextInt(participants.size()))));
                 } else if (discipline.getResultType() == ResultType.JUMP){
-                    results.add(new Result(LocalDate.now(), random.nextDouble(1, 3), discipline,participants.get(random.nextInt(participants.size()))));
+                    results.add(new Result(LocalDate.now(), random.nextInt(100, 300), discipline,participants.get(random.nextInt(participants.size()))));
                 } else if (discipline.getResultType() == ResultType.TIME) {
-                    results.add(new Result(LocalDate.now(), random.nextDouble(10 * 1000, 240 * 1000), discipline,participants.get(random.nextInt(participants.size()))));
+                    results.add(new Result(LocalDate.now(), random.nextInt(10 * 1000, 240 * 1000), discipline,participants.get(random.nextInt(participants.size()))));
                 } else if (discipline.getResultType() == ResultType.POINTS) {
-                    results.add(new Result(LocalDate.now(), random.nextDouble(100, 1000), discipline,participants.get(random.nextInt(participants.size()))));
+                    results.add(new Result(LocalDate.now(), random.nextInt(100, 1000), discipline,participants.get(random.nextInt(participants.size()))));
 
                 }
             }
