@@ -3,6 +3,7 @@ package kea.exercise.practice_animal_backend.participants;
 import kea.exercise.practice_animal_backend.participants.dtos.ParticipantResponseBasics;
 import kea.exercise.practice_animal_backend.participants.dtos.ParticipantResponseDetail;
 import kea.exercise.practice_animal_backend.results.Result;
+import kea.exercise.practice_animal_backend.results.ResultService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,9 +14,11 @@ import java.util.NoSuchElementException;
 @Service
 public class ParticipantService {
     private final ParticipantRepository participantRepository;
+    private final ResultService resultService;
 
-    public ParticipantService(ParticipantRepository participantRepository) {
+    public ParticipantService(ParticipantRepository participantRepository, ResultService resultService) {
         this.participantRepository = participantRepository;
+        this.resultService = resultService;
     }
 
     public List<ParticipantResponseBasics> getParticipants() {
@@ -53,11 +56,17 @@ public class ParticipantService {
     }
 
     public ParticipantResponseDetail toDetailDTO(Participant participant) {
-        return new ParticipantResponseDetail(participant.getId(), participant.getName(), participant.getAge(), participant.getAgeGroup(), participant.getClub(), participant.getGender(), participant.getResults(), participant.getDisciplines());
+
+        return new ParticipantResponseDetail(participant.getId(), participant.getName(), participant.getBirthDate(), participant.getAge(), participant.getAgeGroup(), participant.getClub(), participant.getGender(),
+                participant.getResults().stream().map(res -> resultService.toDTO(res)).toList(), participant.getDisciplines());
     }
 
     public ParticipantResponseBasics toBasicDTO(Participant participant) {
-        return new ParticipantResponseBasics(participant.getId(), participant.getName(), participant.getAge(), participant.getAgeGroup(), participant.getClub(), participant.getGender());
+        return new ParticipantResponseBasics(participant.getId(), participant.getName(), participant.getAge(), participant.getAgeGroup(), participant.getClub(), participant.getGender(), participant.getDisciplines());
     }
 
+    public List<Club> getClubs() {
+        List<Participant> participants = participantRepository.findAll();
+        return participants.stream().map(Participant::getClub).distinct().toList();
+    }
 }

@@ -34,7 +34,12 @@ public class ParticipantController {
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
 
+    @GetMapping("/clubs")
+    public List<Club> getClubs() {
+        System.out.println("get clubs");
+        return participantService.getClubs();
     }
 
 

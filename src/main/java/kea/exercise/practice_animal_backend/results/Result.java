@@ -30,11 +30,37 @@ public class Result {
         this.discipline = discipline;
     }
 
-    String getResult() {
-        return resultValue + " " + discipline.getResultType();
+    public String getResult() {
+        String result;
+        switch (discipline.getResultType()) {
+            case JUMP_HEIGHT, DISTANCE_THROWN, JUMP_LENGTH:
+                result = String.format("%.2fm", resultValue);
+                break;
+            case POINTS:
+                result = String.format("%.2f points", resultValue);
+                break;
+            case TIME:
+                int totalSeconds = (int) (resultValue / 1000);
+                int minutes = totalSeconds / 60;
+                double remainder = (resultValue / 1000.0) % 60;
+                int seconds = (int) remainder;
+                int milliseconds = (int) ((remainder - seconds) * 1000);
+                result = String.format("%d.%02d.%03d", minutes, seconds, milliseconds);
+                break;
+            default:
+                result = "Unknown result type";
+        }
+        return result;
+    }
+
+//    String getResult() {
+//
 //        StringBuilder result = new StringBuilder();
-//         if (discipline.getResultType() == ResultType.JUMP) {
-//            result.append( resultValue/10);
+//         if (discipline.getResultType() == ResultType.JUMP_HEIGHT) {
+//            if (resultValue > 100) {
+//                result.append();
+//
+//            }
 //        }
 //        else if (discipline.getResultType() == ResultType.POINTS) {
 //            return String.format("%.2f", resultValue) + " points";
@@ -48,5 +74,5 @@ public class Result {
 //        else {
 //            return "Unknown result type";
 //        }
-    }
+//    }
 }

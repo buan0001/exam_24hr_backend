@@ -20,7 +20,9 @@ public class Participant {
     private int id;
     private String name;
     private LocalDate birthDate;
-    private String club;
+    @Enumerated(EnumType.STRING)
+    private Club club;
+    //private String club;
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -30,14 +32,14 @@ public class Participant {
     @ManyToMany
     private List<Discipline> disciplines;
 
-    public Participant(String name, LocalDate birthDate, String club, Gender gender, List<Discipline> disciplines) {
+    public Participant(String name, LocalDate birthDate, Club club, Gender gender, List<Discipline> disciplines) {
         this.name = name;
         this.birthDate = birthDate;
         this.club = club;
         this.disciplines = disciplines;
         this.gender = gender;
     }
-    public Participant(String name, LocalDate birthDate, String club,  Gender gender, List<Result> results, List<Discipline> disciplines) {
+    public Participant(String name, LocalDate birthDate, Club club, Gender gender, List<Result> results, List<Discipline> disciplines) {
         this.name = name;
         this.birthDate = birthDate;
         this.club = club;
@@ -52,13 +54,17 @@ public class Participant {
 
     String getAgeGroup(){
         int age = getAge();
-        if (age < 12) {
-            return "U12";
-        } else if (age < 15) {
-            return "U15";
-        } else if (age < 18) {
-            return "U18";
-        } else {
+        if (age < 10) {
+            return "Child";
+        } else if (age < 14) {
+            return "Youth";
+        } else if (age < 23) {
+            return "Junior";
+        }
+        else if (age < 41) {
+            return "Adult";
+        }
+        else {
             return "Senior";
         }
     }
