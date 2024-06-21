@@ -11,8 +11,8 @@
     <groupId>kea.exercise</groupId>
     <artifactId>practice_animal_backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>practice_animal_backend</name>
-    <description>practice_animal_backend</description>
+    <name>exam_24hr_backend</name>
+    <description>backend for 24hr exam</description>
     <properties>
         <java.version>17</java.version>
     </properties>

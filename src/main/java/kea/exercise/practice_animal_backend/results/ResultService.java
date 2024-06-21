@@ -4,7 +4,9 @@ import kea.exercise.practice_animal_backend.common.DTOConverter;
 import kea.exercise.practice_animal_backend.participants.Participant;
 import kea.exercise.practice_animal_backend.participants.ParticipantRepository;
 import kea.exercise.practice_animal_backend.results.dtos.ResultResponseDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class ResultService {
     }
 
     public ResultResponseDTO getResult(int id) {
-        return toDTO(resultRepository.findById(id).orElseThrow(() -> new RuntimeException("Result not found")));
+        return toDTO(resultRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Result not found")));
     }
 
     public ResultResponseDTO updateResult(int id, Result result) {

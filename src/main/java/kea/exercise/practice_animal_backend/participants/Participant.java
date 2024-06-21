@@ -39,11 +39,17 @@ public class Participant {
     }
 
     public int getAge() {
+        if (birthDate == null) {
+            return 0;
+        }
         return LocalDate.now().getYear() - birthDate.getYear();
     }
 
     public String getAgeGroup(){
         int age = getAge();
+        if (age == 0) {
+            return "Unknown";
+        }
         if (age < 10) {
             return "Child";
         } else if (age < 14) {
