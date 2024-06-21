@@ -50,12 +50,6 @@ public class ParticipantController {
         return participantService.createParticipant(participant);
     }
 
-//    @PostMapping("/{id}/addResult")
-//    public ParticipantResponseDetail addResult(@PathVariable int id, @RequestBody Result result) {
-//        System.out.println("add Trophy");
-//        return participantService.addResult(id, result);
-//    }
-
     @PutMapping("/{id}")
     public ParticipantResponseDetail updateParticipant(@PathVariable int id, @RequestBody Participant participant) {
         System.out.println("update participant");
@@ -65,6 +59,7 @@ public class ParticipantController {
     @DeleteMapping("/{id}")
     public void deleteParticipant(@PathVariable int id) {
         System.out.println("delete participant");
+
         participantService.deleteParticipant(id);
     }
 

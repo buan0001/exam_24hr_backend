@@ -22,33 +22,12 @@ public class Participant {
     private LocalDate birthDate;
     @Enumerated(EnumType.STRING)
     private Club club;
-    //private String club;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-
-//    @OneToMany
-//    private List<Result> results;
-
-    @ManyToMany
+        @ManyToMany
     private List<Discipline> disciplines;
 
-//    public Participant(String name, LocalDate birthDate, Club club, Gender gender, List<Discipline> disciplines) {
-//        this.name = name;
-//        this.birthDate = birthDate;
-//        this.club = club;
-//        this.disciplines = disciplines;
-//        this.gender = gender;
-//    }
-//    public Participant(String name, LocalDate birthDate, Club club, Gender gender,
-//                       //List<Result> results,
-//                       List<Discipline> disciplines) {
-//        this.name = name;
-//        this.birthDate = birthDate;
-//        this.club = club;
-//        //this.results = results;
-//        this.disciplines = disciplines;
-//        this.gender = gender;
-//    }
+
 
     public Participant(String name, LocalDate birthDate, Club club, Gender gender, List<Discipline> disciplines) {
         this.name = name;

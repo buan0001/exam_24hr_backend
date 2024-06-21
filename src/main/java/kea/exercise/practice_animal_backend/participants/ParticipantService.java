@@ -18,12 +18,15 @@ import java.util.NoSuchElementException;
 public class ParticipantService {
     private final ParticipantRepository participantRepository;
     private final ResultService resultService;
+
+    private final ResultRepository resultRepository;
     private final DTOConverter dtoConverter;
 
-    public ParticipantService(ParticipantRepository participantRepository, ResultService resultService, DTOConverter dtoConverter) {
+    public ParticipantService(ParticipantRepository participantRepository, ResultService resultService, DTOConverter dtoConverter, ResultRepository resultRepository) {
         this.participantRepository = participantRepository;
         this.resultService = resultService;
         this.dtoConverter = dtoConverter;
+        this.resultRepository = resultRepository;
     }
 
     public List<ParticipantResponseBasics> getParticipants() {
@@ -42,13 +45,17 @@ public class ParticipantService {
         return toDetailDTO(participantRepository.save(participant)) ;
     }
 
-//    public ParticipantResponseDetail addResult(int id, Result result) {
-//        Participant participant = findParticipant(id);
-//        participant.addResult(result);
-//        return toDetailDTO(participantRepository.save(participant)) ;
-//    }
+
 
     public void deleteParticipant(int id) {
+
+        List<Result> associatedResults = resultRepository.findAllByParticipantId(id);
+        resultRepository.deleteAll(associatedResults);
+        associatedResults.size();
+        resultRepository.flush();
+        //flush so I can delete the participant
+
+
         participantRepository.deleteById(id);
     }
 
@@ -58,11 +65,12 @@ public class ParticipantService {
         existingParticipant.setBirthDate(participant.getBirthDate());
         existingParticipant.setClub(participant.getClub());
         existingParticipant.setGender(participant.getGender());
+        existingParticipant.setDisciplines(participant.getDisciplines());
         return toDetailDTO(participantRepository.save(existingParticipant)) ;
     }
 
     public ParticipantResponseDetail toDetailDTO(Participant participant) {
-    List<ResultResponseDTO> foundResults = resultService.getResultsByParticipantID(participant.getId());
+    List<ResultResponseDTO> foundResults = resultService.getResultsByParticipantID(participant.getId()).stream().map(result -> resultService.toDTO(result)).toList();
         return new ParticipantResponseDetail(participant.getId(), participant.getName(), participant.getBirthDate(), participant.getAge(), participant.getAgeGroup(), participant.getClub(), participant.getGender(),
                 foundResults, participant.getDisciplines());
     }

@@ -1,9 +1,6 @@
 package kea.exercise.practice_animal_backend.disciplines;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/disciplines")
@@ -17,5 +14,14 @@ public class DisciplineController {
     @GetMapping
     public Iterable<Discipline> getDisciplines() {
         return disciplineService.getDisciplines();
+    }
+
+    @PostMapping
+    public Discipline createDiscipline(@RequestBody Discipline discipline) {
+        return disciplineService.createDiscipline(discipline);
+    }
+    @PutMapping("/{id}")
+    public Discipline updateDiscipline(@PathVariable String id, @RequestBody Discipline discipline) {
+        return disciplineService.updateDiscipline(id, discipline);
     }
 }

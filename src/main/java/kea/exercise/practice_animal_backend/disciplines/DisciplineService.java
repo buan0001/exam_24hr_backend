@@ -13,4 +13,16 @@ public class DisciplineService {
     public Iterable<Discipline> getDisciplines() {
         return disciplineRepository.findAll();
     }
+
+    public Discipline createDiscipline(Discipline discipline) {
+        return disciplineRepository.save(discipline);
+    }
+
+    public Discipline updateDiscipline(String id, Discipline discipline) {
+        if (disciplineRepository.existsById(Integer.parseInt(id))) {
+            discipline.setId(Integer.parseInt(id));
+            return disciplineRepository.save(discipline);
+        }
+        return null;
+    }
 }

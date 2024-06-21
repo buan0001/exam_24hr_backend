@@ -55,6 +55,7 @@ public class ResultService {
 
 
     public void deleteResult(int id) {
+        System.out.println("deleting result with id " + id);
         resultRepository.deleteById(id);
     }
 
@@ -62,10 +63,15 @@ public class ResultService {
 
         List<Result> validatedResults = new ArrayList<>();
         for (Result result : results) {
-            Participant participant = participantRepository.findById(result.getParticipant().getId()).orElseThrow(() -> new RuntimeException("Participant not found"));
-            if (allowedToAdd(result, participant)) {
+            System.out.println("saving this id");
+            System.out.println(result.getParticipant().getId());
+            Participant participant = participantRepository.findById(result.getParticipant().getId()).orElse(null);
+            if (participant!= null && participant.hasDiscipline(result.getDiscipline())) {
                 result.setParticipant(participant);
                 validatedResults.add(result);
+            }
+            else {
+                System.out.println("Participant does not have discipline");
             }
         }
         return resultRepository.saveAll(validatedResults).stream().map(this::toDTO).toList();
@@ -77,7 +83,7 @@ public class ResultService {
 //        return toDTO(resultRepository.save(result));
     }
 
-    public List<ResultResponseDTO> getResultsByParticipantID(int id) {
-        return resultRepository.findAllByParticipantId(id).stream().map(this::toDTO).toList();
+    public List<Result> getResultsByParticipantID(int id) {
+        return resultRepository.findAllByParticipantId(id);
     }
 }
