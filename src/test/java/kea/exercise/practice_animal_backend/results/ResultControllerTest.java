@@ -18,6 +18,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -127,6 +128,37 @@ class ResultControllerTest {
                     assertEquals(finalResult.getId(), responseBody.id());
                     assertEquals(finalResult.getResult(), responseBody.result());
                 });
+    }
+
+    @Test
+    @DisplayName("Should not update an existing result, if the discipline is not 'owned' by the participant")
+    void shouldFailToUpdate() {
+        Discipline discipline = new Discipline("Test Discipline", ResultType.TIME);
+        discipline = disciplineRepository.save(discipline);
+
+        Discipline discipline2 = new Discipline("something else", ResultType.JUMP);
+        discipline2 = disciplineRepository.save(discipline2);
+
+        Participant participant = new Participant();
+        participant.setName("Test");
+        participant.setDisciplines(List.of(discipline));
+        participant = participantRepository.save(participant);
+
+
+        Result result = new Result();
+        result.setParticipant(participant);
+        result.setResultValue(100);
+        result.setDiscipline(discipline);
+        result = resultRepository.save(result);
+        result.setResultValue(200);
+        result.setDiscipline(discipline2);
+
+        Result finalResult = result;
+        client.put().uri("/results/" + result.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(result)
+                .exchange()
+                .expectStatus().isBadRequest();
     }
 
     @Test

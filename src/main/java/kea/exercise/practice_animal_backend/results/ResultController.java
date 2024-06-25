@@ -1,7 +1,9 @@
 package kea.exercise.practice_animal_backend.results;
 
 import kea.exercise.practice_animal_backend.results.dtos.ResultResponseDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -33,7 +35,12 @@ public class ResultController {
 
     @PutMapping("/{id}")
     public ResultResponseDTO updateResult(@PathVariable int id, @RequestBody Result result) {
-        return resultService.updateResult(id, result);
+        try {
+            return resultService.updateResult(id, result);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
     }
 
     @DeleteMapping("/{id}")

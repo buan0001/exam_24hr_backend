@@ -31,7 +31,7 @@ public class ParticipantService {
     }
 
     public List<ParticipantResponseBasics> getParticipants(String sortBy, String sortOrder) {
-        Sort sort = Sort.by(sortBy);
+        Sort sort = Sort.by(sortBy).ascending();
         if (sortOrder != null && sortOrder.equals("desc")) {
             sort = sort.descending();
         }
@@ -39,6 +39,7 @@ public class ParticipantService {
         return participants.stream().map(participant -> dtoConverter.toBasicParticipantDTO(participant)).toList();
         //return participantRepository.findAll().stream().map(participant -> dtoConverter.toBasicParticipantDTO(participant)).toList();
     }
+
 
     public ParticipantResponseDetail getParticipant(int id) {
         return toDetailDTO(participantRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Participant not found"))) ;

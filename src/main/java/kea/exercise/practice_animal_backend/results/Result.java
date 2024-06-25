@@ -1,5 +1,6 @@
 package kea.exercise.practice_animal_backend.results;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import kea.exercise.practice_animal_backend.disciplines.Discipline;
 import kea.exercise.practice_animal_backend.participants.Participant;
@@ -35,6 +36,7 @@ public class Result {
         this.discipline = discipline;
         this.participant = participant;
     }
+
 
     public String getResult() {
         String result;

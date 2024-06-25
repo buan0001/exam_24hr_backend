@@ -64,45 +64,51 @@ public class InitData implements CommandLineRunner {
 
     private void initResults() {
         Random random = new Random();
-        for (Discipline discipline : disciplines) {
-            for (int j = 0; j < 3; j++) {
+        for (Participant participant : participants) {
+            for (Discipline discipline : participant.getDisciplines()) {
+
                 if (discipline.getResultType() == ResultType.THROW) {
-                    results.add(new Result(LocalDate.now(), random.nextInt(1500, 6500), discipline, participants.get(random.nextInt(participants.size()))));
-                } else if (discipline.getResultType() == ResultType.JUMP){
-                    results.add(new Result(LocalDate.now(), random.nextInt(100, 300), discipline,participants.get(random.nextInt(participants.size()))));
+                    results.add(new Result(LocalDate.now(), random.nextInt(1500, 6500), discipline, participant));
+                } else if (discipline.getResultType() == ResultType.JUMP) {
+                    results.add(new Result(LocalDate.now(), random.nextInt(100, 300), discipline, participant));
                 } else if (discipline.getResultType() == ResultType.TIME) {
-                    results.add(new Result(LocalDate.now(), random.nextInt(10 * 1000, 240 * 1000), discipline,participants.get(random.nextInt(participants.size()))));
+                    results.add(new Result(LocalDate.now(), random.nextInt(10 * 1000, 240 * 1000), discipline, participant));
                 } else if (discipline.getResultType() == ResultType.POINTS) {
-                    results.add(new Result(LocalDate.now(), random.nextInt(100, 1000), discipline,participants.get(random.nextInt(participants.size()))));
+                    results.add(new Result(LocalDate.now(), random.nextInt(100, 1000), discipline, participant));
+
 
                 }
-            }
 
-            resultRepository.saveAll(results);
+            }
         }
+        resultRepository.saveAll(results);
     }
 
 
-    private void initClubs(){
+    private void initClubs() {
 
     }
 
     private void initParticipants() {
         Random random = new Random();
-        participants.add(new Participant("Frederik Larsen", LocalDate.of(random.nextInt(1990, 2015), 1, 4), Club.Amager_AC, Gender.MAN, disciplines));
+        participants.add(new Participant("Frederik Larsen", LocalDate.of(random.nextInt(1990, 2020), 1, 4), Club.Amager_AC, Gender.MAN, disciplines));
         participants.add(new Participant("Henrik Jensen", LocalDate.of(random.nextInt(1990, 2015), 2, 6), Club.Amager_AC, Gender.MAN, disciplines));
         participants.add(new Participant("Emilie Prag", LocalDate.of(random.nextInt(1990, 2015), 3, 5), Club.BAC, Gender.WOMAN, disciplines));
         participants.add(new Participant("Freja Juul", LocalDate.of(random.nextInt(1990, 2015), 4, 9), Club.BAC, Gender.WOMAN, disciplines));
         participants.add(new Participant("Hermann Bang", LocalDate.of(random.nextInt(1990, 2015), 5, 11), Club.Sparta, Gender.MAN, disciplines));
         participants.add(new Participant("Louise Skovlund", LocalDate.of(random.nextInt(1990, 2015), 6, 21), Club.Roskilde_AC, Gender.OTHER, disciplines));
         participants.add(new Participant("Gustav Gaard", LocalDate.of(random.nextInt(1990, 2015), 7, 14), Club.KIF, Gender.OTHER, List.of(disciplines.get(6), disciplines.get(7), disciplines.get(8))));
-//participants.add(new Participant("Frederik Larsen", LocalDate.of(random.nextInt(1990, 2015), 1, 4), Club.Amager_AC, Gender.MAN, List.of(results.get(0), results.get(5)), disciplines));
-//        participants.add(new Participant("Henrik Jensen", LocalDate.of(random.nextInt(1990, 2015), 2, 6), Club.Amager_AC, Gender.MAN, List.of(results.get(1), results.get(4)), disciplines));
-//        participants.add(new Participant("Emilie Prag", LocalDate.of(random.nextInt(1990, 2015), 3, 5), Club.BAC, Gender.WOMAN, List.of(results.get(2), results.get(3)), disciplines));
-//        participants.add(new Participant("Freja Juul", LocalDate.of(random.nextInt(1990, 2015), 4, 9), Club.BAC, Gender.WOMAN, List.of(results.get(6), results.get(10)), disciplines));
-//        participants.add(new Participant("Hermann Bang", LocalDate.of(random.nextInt(1990, 2015), 5, 11), Club.Sparta, Gender.MAN, List.of(results.get(7), results.get(9)), disciplines));
-//        participants.add(new Participant("Louise Skovlund", LocalDate.of(random.nextInt(1990, 2015), 6, 21), Club.Roskilde_AC, Gender.OTHER, List.of(results.get(8), results.get(11)), disciplines));
-//        participants.add(new Participant("Gustav Gaard", LocalDate.of(random.nextInt(1990, 2015), 7, 14), Club.KIF, Gender.OTHER, List.of(disciplines.get(6), disciplines.get(7), disciplines.get(8))));
+        for (int i = 0; i < 40; i++) {
+            participants.add(new Participant("Participant " + i, LocalDate.of(random.nextInt(1990, 2020), random.nextInt(1, 12), random.nextInt(1, 28)),
+
+                            Club.values()[random.nextInt(Club.values().length - 1)],
+                            Gender.values()[random.nextInt(Gender.values().length - 1)],
+                            List.of(disciplines.get(random.nextInt(disciplines.size() - 1)), disciplines.get(random.nextInt(disciplines.size() - 1)))
+                    )
+            );
+            //List.of( disciplines.get(random.nextInt(disciplines.size()))));
+
+        }
 
         participantRepository.saveAll(participants);
     }

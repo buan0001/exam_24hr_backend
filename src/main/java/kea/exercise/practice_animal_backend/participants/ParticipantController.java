@@ -21,7 +21,6 @@ public class ParticipantController {
         this.participantService = participantService;
     }
 
-    // allow sorting by various fields, also reversable
     @GetMapping
     public List<ParticipantResponseBasics> getParticipants(@RequestParam(required = false, defaultValue = "name") String sortBy, @RequestParam(required = false) String sortOrder) {
         System.out.println("get participants 1");
@@ -30,12 +29,6 @@ public class ParticipantController {
         return participantService.getParticipants(sortBy, sortOrder);
     }
 
-//    @GetMapping("/?{sortOrder}")
-//    public List<ParticipantResponseBasics> getParticipantsSorted(@PathVariable String sortOrder) {
-//        System.out.println("get participants SORTED");
-//        System.out.println(sortOrder);
-//        return participantService.getParticipants();
-//    }
 
     @GetMapping("/{id}")
     public ParticipantResponseDetail getParticipant(@PathVariable int id) {

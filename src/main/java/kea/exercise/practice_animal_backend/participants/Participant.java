@@ -67,7 +67,7 @@ public class Participant {
 
 
     public boolean hasDiscipline(Discipline discipline) {
-        for (Discipline d : disciplines) {
+        for (Discipline d : this.disciplines) {
             if (d.getName().equals(discipline.getName()) ) {
                 return true;
             }
