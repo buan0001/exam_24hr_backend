@@ -7,6 +7,7 @@ import kea.exercise.practice_animal_backend.results.Result;
 import kea.exercise.practice_animal_backend.results.ResultRepository;
 import kea.exercise.practice_animal_backend.results.ResultService;
 import kea.exercise.practice_animal_backend.results.dtos.ResultResponseDTO;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,8 +30,14 @@ public class ParticipantService {
         this.resultRepository = resultRepository;
     }
 
-    public List<ParticipantResponseBasics> getParticipants() {
-        return participantRepository.findAll().stream().map(participant -> dtoConverter.toBasicParticipantDTO(participant)).toList();
+    public List<ParticipantResponseBasics> getParticipants(String sortBy, String sortOrder) {
+        Sort sort = Sort.by(sortBy);
+        if (sortOrder != null && sortOrder.equals("desc")) {
+            sort = sort.descending();
+        }
+        List<Participant> participants = participantRepository.findAll(sort);
+        return participants.stream().map(participant -> dtoConverter.toBasicParticipantDTO(participant)).toList();
+        //return participantRepository.findAll().stream().map(participant -> dtoConverter.toBasicParticipantDTO(participant)).toList();
     }
 
     public ParticipantResponseDetail getParticipant(int id) {

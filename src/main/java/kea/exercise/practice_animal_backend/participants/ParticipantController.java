@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/participants")
@@ -20,11 +21,21 @@ public class ParticipantController {
         this.participantService = participantService;
     }
 
+    // allow sorting by various fields, also reversable
     @GetMapping
-    public List<ParticipantResponseBasics> getParticipants() {
-        System.out.println("get participants");
-        return participantService.getParticipants();
+    public List<ParticipantResponseBasics> getParticipants(@RequestParam(required = false, defaultValue = "name") String sortBy, @RequestParam(required = false) String sortOrder) {
+        System.out.println("get participants 1");
+        System.out.println("sort by:" + sortBy);
+        System.out.println("sort order:" + sortOrder);
+        return participantService.getParticipants(sortBy, sortOrder);
     }
+
+//    @GetMapping("/?{sortOrder}")
+//    public List<ParticipantResponseBasics> getParticipantsSorted(@PathVariable String sortOrder) {
+//        System.out.println("get participants SORTED");
+//        System.out.println(sortOrder);
+//        return participantService.getParticipants();
+//    }
 
     @GetMapping("/{id}")
     public ParticipantResponseDetail getParticipant(@PathVariable int id) {
