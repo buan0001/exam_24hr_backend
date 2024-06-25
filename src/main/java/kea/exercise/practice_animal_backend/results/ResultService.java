@@ -51,9 +51,8 @@ public class ResultService {
                 dtoConverter.toBasicParticipantDTO(result.getParticipant()));
     }
 
-    public boolean allowedToAdd(Result result, Participant participant) {
-        return participant.hasDiscipline(result.getDiscipline());
-    }
+
+
 
 
     public void deleteResult(int id) {
