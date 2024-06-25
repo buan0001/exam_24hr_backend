@@ -8,8 +8,8 @@
         <version>3.3.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>kea.exercise</groupId>
-    <artifactId>practice_animal_backend</artifactId>
+    <groupId>kea.exam</groupId>
+    <artifactId>exam_24hr_backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>exam_24hr_backend</name>
     <description>backend for 24hr exam</description>
