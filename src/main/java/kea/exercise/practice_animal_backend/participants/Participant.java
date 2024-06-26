@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -25,11 +26,12 @@ public class Participant {
     @Enumerated(EnumType.STRING)
     private Gender gender;
         @ManyToMany
-    private List<Discipline> disciplines;
+    private Set<Discipline> disciplines;
+    //private List<Discipline> disciplines;
 
 
 
-    public Participant(String name, LocalDate birthDate, Club club, Gender gender, List<Discipline> disciplines) {
+    public Participant(String name, LocalDate birthDate, Club club, Gender gender, Set<Discipline> disciplines) {
         this.name = name;
         this.birthDate = birthDate;
         this.club = club;

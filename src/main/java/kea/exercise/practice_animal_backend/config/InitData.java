@@ -13,9 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Component
 public class InitData implements CommandLineRunner {
@@ -91,19 +89,21 @@ public class InitData implements CommandLineRunner {
 
     private void initParticipants() {
         Random random = new Random();
-        participants.add(new Participant("Frederik Larsen", LocalDate.of(random.nextInt(1990, 2020), 1, 4), Club.Amager_AC, Gender.MAN, disciplines));
-        participants.add(new Participant("Henrik Jensen", LocalDate.of(random.nextInt(1990, 2015), 2, 6), Club.Amager_AC, Gender.MAN, disciplines));
-        participants.add(new Participant("Emilie Prag", LocalDate.of(random.nextInt(1990, 2015), 3, 5), Club.BAC, Gender.WOMAN, disciplines));
-        participants.add(new Participant("Freja Juul", LocalDate.of(random.nextInt(1990, 2015), 4, 9), Club.BAC, Gender.WOMAN, disciplines));
-        participants.add(new Participant("Hermann Bang", LocalDate.of(random.nextInt(1990, 2015), 5, 11), Club.Sparta, Gender.MAN, disciplines));
-        participants.add(new Participant("Louise Skovlund", LocalDate.of(random.nextInt(1990, 2015), 6, 21), Club.Roskilde_AC, Gender.OTHER, disciplines));
-        participants.add(new Participant("Gustav Gaard", LocalDate.of(random.nextInt(1990, 2015), 7, 14), Club.KIF, Gender.OTHER, List.of(disciplines.get(6), disciplines.get(7), disciplines.get(8))));
+        participants.add(new Participant("Frederik Larsen", LocalDate.of(random.nextInt(1990, 2020), 1, 4), Club.Amager_AC, Gender.MAN, Set.copyOf( disciplines)));
+        participants.add(new Participant("Henrik Jensen", LocalDate.of(random.nextInt(1990, 2015), 2, 6), Club.Amager_AC, Gender.MAN,  Set.copyOf( disciplines)));
+        participants.add(new Participant("Emilie Prag", LocalDate.of(random.nextInt(1990, 2015), 3, 5), Club.BAC, Gender.WOMAN,  Set.copyOf( disciplines)));
+        participants.add(new Participant("Freja Juul", LocalDate.of(random.nextInt(1990, 2015), 4, 9), Club.BAC, Gender.WOMAN,  Set.copyOf( disciplines)));
+        participants.add(new Participant("Hermann Bang", LocalDate.of(random.nextInt(1990, 2015), 5, 11), Club.Sparta, Gender.MAN,  Set.copyOf( disciplines)));
+        participants.add(new Participant("Louise Skovlund", LocalDate.of(random.nextInt(1990, 2015), 6, 21), Club.Roskilde_AC, Gender.OTHER,  Set.copyOf( disciplines)));
+        participants.add(new Participant("Gustav Gaard", LocalDate.of(random.nextInt(1990, 2015), 7, 14), Club.KIF, Gender.OTHER, Set.copyOf(List.of(disciplines.get(6), disciplines.get(7), disciplines.get(8)))));
         for (int i = 0; i < 40; i++) {
-            participants.add(new Participant("Participant " + i, LocalDate.of(random.nextInt(1990, 2020), random.nextInt(1, 12), random.nextInt(1, 28)),
+            Set<Discipline> disciplineSet = new HashSet<>(Set.of(disciplines.get(random.nextInt(disciplines.size() - 1))));
+            disciplineSet.add(disciplines.get(random.nextInt(disciplines.size() - 1)));
+            participants.add(new Participant("Participant" + i, LocalDate.of(random.nextInt(1990, 2020), random.nextInt(1, 12), random.nextInt(1, 28)),
 
                             Club.values()[random.nextInt(Club.values().length - 1)],
                             Gender.values()[random.nextInt(Gender.values().length - 1)],
-                            List.of(disciplines.get(random.nextInt(disciplines.size() - 1)), disciplines.get(random.nextInt(disciplines.size() - 1)))
+                            disciplineSet
                     )
             );
             //List.of( disciplines.get(random.nextInt(disciplines.size()))));
