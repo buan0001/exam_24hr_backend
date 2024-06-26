@@ -91,4 +91,7 @@ public class ParticipantService {
     }
 
 
+    public List<Participant> test() {
+        return participantRepository.findAllByOrderByClub();
+    }
 }

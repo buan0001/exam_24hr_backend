@@ -67,5 +67,9 @@ public class ParticipantController {
         participantService.deleteParticipant(id);
     }
 
+    @GetMapping("/test")
+    public List<Participant> test() {
+        return participantService.test();
+    }
 
 }

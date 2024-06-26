@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Integer> {
 
+    List<Participant> findAllByOrderByClub();
 }

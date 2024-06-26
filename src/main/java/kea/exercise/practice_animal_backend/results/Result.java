@@ -41,9 +41,14 @@ public class Result {
     public String getResult() {
         String result;
         switch (discipline.getResultType()) {
-            case THROW:
-            case JUMP, POINTS:
+            case POINTS:
                 result = String.format("%d", resultValue);
+                break;
+            case JUMP, THROW:
+                int cm = resultValue;
+                int meters = cm / 100;
+                int centimeters = cm % 100;
+                result = String.format("%d.%02d", meters, centimeters);
                 break;
             case TIME:
                 int totalSeconds = (int) (resultValue / 1000);
